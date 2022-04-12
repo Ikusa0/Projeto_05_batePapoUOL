@@ -1,0 +1,295 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f3f3f3;
+}
+
+.login {
+  width: 100%;
+  height: 100%;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 4;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: white;
+}
+
+.login img {
+  width: 130px;
+  height: 92px;
+
+  margin: 72px 0 94px 0;
+}
+
+.login input {
+  width: 260px;
+  height: 54px;
+
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 25px;
+
+  text-align: center;
+
+  border: 1px solid #d7d7d7;
+  border-radius: 4px;
+}
+
+.login input::placeholder {
+  color: #aeaeae;
+}
+
+.login input:focus-visible {
+  border: 1px solid #aeaeae;
+  outline: none;
+}
+
+.login button {
+  width: 109px;
+  height: 45px;
+
+  margin-top: 15px;
+
+  border-radius: 9px;
+  border: none;
+
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 25px;
+  color: #696969;
+  background-color: #e7e7e7;
+}
+
+header {
+  width: 100%;
+  height: 80px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 22px;
+  box-sizing: border-box;
+}
+
+header img {
+  width: 75px;
+  height: 53px;
+}
+
+header .icon {
+  font-size: 45px;
+}
+
+footer {
+  width: 100%;
+  height: 80px;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+
+  box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
+  background-color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 17px;
+  box-sizing: border-box;
+}
+
+footer div {
+  display: flex;
+  flex-direction: column;
+}
+
+footer input {
+  height: 100%;
+
+  border: none;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+
+  color: black;
+}
+
+footer input::placeholder {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+
+  color: black;
+}
+
+footer input:focus-visible {
+  outline: none;
+}
+
+footer span {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 25px;
+
+  color: #505050;
+}
+
+footer .icon {
+  font-size: 26px;
+}
+
+.sidebar-background {
+  width: 100%;
+  height: 100%;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.sidebar {
+  width: 259px;
+  height: 100%;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 3;
+
+  background-color: white;
+
+  padding: 26px 20px;
+  box-sizing: border-box;
+
+  transition: all 500ms;
+}
+
+.sidebar .menu-title {
+  text-align: center;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: black;
+
+  margin-bottom: 30px;
+}
+
+.sidebar .menu-title:last-of-type {
+  margin: 30px 0 20px 0;
+}
+
+.sidebar .menu-title h3 {
+  display: block;
+}
+
+.sidebar .menu-option {
+  height: 36px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  cursor: pointer;
+}
+
+.sidebar .menu-option:hover {
+  background-color: #ececec;
+}
+
+.sidebar .menu-option div {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .icon {
+  font-size: 25px;
+
+  margin-right: 8px;
+}
+
+.sidebar .icon.check {
+  font-size: 16px;
+  color: #28bb25;
+}
+
+.sidebar .selected .icon.check {
+  display: inline;
+}
+
+.sidebar.hidden {
+  right: -259px;
+}
+
+footer span.hidden,
+.login.hidden,
+.sidebar-background.hidden,
+.sidebar .icon.check {
+  display: none;
+}
+
+.webpage {
+  margin-top: 106px;
+}
+
+.message {
+  min-height: 40px;
+  background-color: white;
+  border-radius: 2px;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  padding: 14px 8px;
+  margin-bottom: 4px;
+  box-sizing: border-box;
+}
+
+.message.status {
+  background-color: #dcdcdc;
+}
+
+.message.private {
+  background-color: #ffdede;
+}
+
+.message .time {
+  color: #aaa;
+}
+
+.message .name,
+.message .destination {
+  font-weight: bold;
+}

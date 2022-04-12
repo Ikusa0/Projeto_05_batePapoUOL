@@ -1,15 +1,113 @@
 <!DOCTYPE html>
 <html lang="pt_br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bate-Papo UOL</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bate-Papo UOL</title>
+    <link rel="shortcut icon" href="./src/img/favicon.png" type="image/x-icon" />
 
-  <link rel="stylesheet" href="./src/css/reset.css">
-  <link rel="stylesheet" href="./src/css/style.css">
-</head>
-<body>
-  
-  <script src="./src/js/app.js"></script>
-</body>
+    <link rel="stylesheet" href="./src/css/reset.css" />
+    <link rel="stylesheet" href="./src/css/style.css" />
+  </head>
+  <body>
+    <div class="login">
+      <img src="./src/img/logo.png" alt="Logo Bate-Papo UOL" />
+      <input onkeyup="login(event)" type="text" placeholder="Digite seu nome" />
+      <button onclick="login(event)">Entrar</button>
+    </div>
+    <header>
+      <img src="./src/img/logo.png" alt="Logo Bate-Papo UOL" />
+      <ion-icon onclick="showSidebar()" class="icon" name="people"></ion-icon>
+    </header>
+    <footer>
+      <div>
+        <input type="text" placeholder="Escreva aqui..." />
+        <span class="hidden">Enviando para <span class="name">Maria</span> (reservadamente)</span>
+      </div>
+      <ion-icon class="icon" name="paper-plane-outline"></ion-icon>
+    </footer>
+    <div onclick="hideSidebar()" class="sidebar-background hidden"></div>
+    <aside class="sidebar hidden">
+      <section class="menu-title">
+        <h3>Escolha um contato para enviar mensagem:</h3>
+      </section>
+      <div onclick="selectContact(this)" class="menu-option contact">
+        <div>
+          <ion-icon class="icon" name="people"></ion-icon>
+          <h4>Todos</h4>
+        </div>
+        <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
+      </div>
+      <div onclick="selectContact(this)" class="menu-option contact">
+        <div>
+          <ion-icon class="icon" name="person-circle"></ion-icon>
+          <h4>João</h4>
+        </div>
+        <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
+      </div>
+      <div onclick="selectContact(this)" class="menu-option contact selected">
+        <div>
+          <ion-icon class="icon" name="person-circle"></ion-icon>
+          <h4>Maria</h4>
+        </div>
+        <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
+      </div>
+      <section class="menu-title">
+        <h3>Escolha a visibilidade:</h3>
+      </section>
+      <div onclick="selectMethod(this)" class="menu-option method selected">
+        <div>
+          <ion-icon class="icon" name="lock-open"></ion-icon>
+          <h4>Público</h4>
+        </div>
+        <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
+      </div>
+      <div onclick="selectMethod(this)" class="menu-option method">
+        <div>
+          <ion-icon class="icon" name="lock-closed"></ion-icon>
+          <h4>Reservadamente</h4>
+        </div>
+        <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
+      </div>
+    </aside>
+    <div class="webpage">
+      <div class="message status">
+        <span class="time">(09:21:45)</span>
+        <span class="name">João</span>
+        <span class="content">entra na sala...</span>
+      </div>
+      <div class="message">
+        <span class="time">(09:22:28)</span>
+        <span class="name">João</span>
+        <span class="method">para</span>
+        <span class="destination">Todos:</span>
+        <span class="content">Bom dia</span>
+      </div>
+      <div class="message">
+        <span class="time">(09:22:38)</span>
+        <span class="name">Maria</span>
+        <span class="method">para</span>
+        <span class="destination">João:</span>
+        <span class="content">Oi João :)</span>
+      </div>
+      <div class="message private">
+        <span class="time">(09:22:48)</span>
+        <span class="name">João</span>
+        <span class="method">reservadamente para</span>
+        <span class="destination">Maria:</span>
+        <span class="content">Oi gatinha quer tc?</span>
+      </div>
+      <div class="message status">
+        <span class="time">(09:22:58)</span>
+        <span class="name">Maria</span>
+        <span class="content">sai da sala...</span>
+      </div>
+    </div>
+
+    <!-- IONICONS -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- MAIN SCRIPT -->
+    <script src="./src/js/app.js"></script>
+  </body>
 </html>
