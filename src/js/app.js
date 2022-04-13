@@ -1,6 +1,9 @@
 // TODO: Criar uma função separada para mostrar mensagem de envio reservado
 
 // ========================= GLOBAL VARIABLES ==========================
+const API_CONTACT_LIST = "https://mock-api.driven.com.br/api/v6/uol/participants";
+const API_CONNECTION_STATUS = "https://mock-api.driven.com.br/api/v6/uol/status";
+const API_MESSAGES = "https://mock-api.driven.com.br/api/v6/uol/messages";
 // =====================================================================
 
 // =========================== AUX FUNCTIONS ===========================
@@ -29,8 +32,22 @@ function getPrivateMessageInformation() {
 function login(event) {
   if (event.type !== "click" && event.key !== "Enter") return;
 
-  const loginDiv = document.querySelector(".login");
-  loginDiv.classList.add("hidden");
+  const name = document.querySelector(".login input").value;
+
+  const promise = axios.post(API_CONTACT_LIST, {
+    name: name,
+  });
+
+  promise.then(function () {
+    const loginDiv = document.querySelector(".login");
+    loginDiv.classList.add("hidden");
+    window.setInterval(sendPresenceStatus, 4000, name);
+  });
+
+  promise.catch(function () {
+    const errorMessage = document.querySelector(".login span");
+    errorMessage.classList.remove("hidden");
+  });
 }
 
 function showSidebar() {
@@ -86,5 +103,15 @@ function changePrivateMessageInformation(method, contact) {
   if (method === "Público") {
     privateMessageInformation.classList.add("hidden");
   }
+}
+
+function sendPresenceStatus(name) {
+  const promise = axios.post(API_CONNECTION_STATUS, {
+    name: name,
+  });
+
+  promise.then(() => {
+    console.log("Presence Status Sent");
+  });
 }
 // =====================================================================

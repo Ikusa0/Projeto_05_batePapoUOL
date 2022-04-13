@@ -13,6 +13,7 @@
     <div class="login">
       <img src="./src/img/logo.png" alt="Logo Bate-Papo UOL" />
       <input onkeyup="login(event)" type="text" placeholder="Digite seu nome" />
+      <span class="hidden">O nome escolhido já existe!</span>
       <button onclick="login(event)">Entrar</button>
     </div>
     <header>
@@ -104,6 +105,8 @@
       </div>
     </div>
 
+    <!-- AXIOS -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- IONICONS -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
