@@ -4,6 +4,7 @@
 const API_CONTACT_LIST = "https://mock-api.driven.com.br/api/v6/uol/participants";
 const API_CONNECTION_STATUS = "https://mock-api.driven.com.br/api/v6/uol/status";
 const API_MESSAGES = "https://mock-api.driven.com.br/api/v6/uol/messages";
+let lastMessage;
 // =====================================================================
 
 // =========================== AUX FUNCTIONS ===========================
@@ -26,6 +27,38 @@ function getSelectedMethod() {
 function getPrivateMessageInformation() {
   return document.querySelector("footer span");
 }
+
+function getChat() {
+  return document.querySelector(".webpage");
+}
+
+function clearChat() {
+  getChat().innerHTML = "";
+}
+
+function convertTime(time) {
+  time = time.split(":");
+  let hours = parseInt(time[0]);
+  let minutes = parseInt(time[1]);
+  let seconds = parseInt(time[2]);
+
+  hours -= 3;
+
+  if (hours < 0) {
+    hours += 24;
+  }
+
+  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
+}
+
+function compareMessages(m1, m2) {
+  if (!m1 || !m2) {
+    return false;
+  }
+  return m1.time === m2.time && m1.type === m2.type && m1.text === m2.text && m1.from === m2.from && m1.to === m2.to;
+}
 // =====================================================================
 
 // ===================== EVENT LISTENER FUNCTIONS ======================
@@ -41,7 +74,10 @@ function login(event) {
   promise.then(function () {
     const loginDiv = document.querySelector(".login");
     loginDiv.classList.add("hidden");
+    loadMessages(name);
+
     window.setInterval(sendPresenceStatus, 4000, name);
+    window.setInterval(loadMessages, 3000, name);
   });
 
   promise.catch(function () {
@@ -112,6 +148,66 @@ function sendPresenceStatus(name) {
 
   promise.then(() => {
     console.log("Presence Status Sent");
+  });
+}
+
+function loadMessages(name) {
+  const promise = axios.get(API_MESSAGES);
+
+  promise.then(function (response) {
+    const chat = getChat();
+    clearChat();
+
+    response.data.forEach(function (message) {
+      const time = convertTime(message.time);
+      const type = message.type;
+      const text = message.text;
+      const from = message.from;
+      const to = message.to;
+
+      if (type === "message") {
+        const messageBlock = `
+        <div class="message">
+          <span class="time">(${time})</span>
+          <span class="name">${from}</span>
+          <span class="method">para</span>
+          <span class="destination">${to}:</span>
+          <span class="content">${text}</span>
+        </div>`;
+
+        chat.innerHTML += messageBlock;
+      }
+
+      if (type === "status") {
+        const messageBlock = `
+        <div class="message status">
+          <span class="time">(${time})</span>
+          <span class="name">${from}</span>
+          <span class="content">${text}</span>
+        </div>`;
+
+        chat.innerHTML += messageBlock;
+      }
+
+      if (type === "private_message") {
+        if (to !== name) return;
+        const messageBlock = `
+        <div class="message private">
+          <span class="time">(${time})</span>
+          <span class="name">${from}</span>
+          <span class="method">reservadamente para</span>
+          <span class="destination">${to}:</span>
+          <span class="content">${text}</span>
+        </div>`;
+
+        chat.innerHTML += messageBlock;
+      }
+    });
+
+    if (!compareMessages(lastMessage, response.data.at(-1))) {
+      lastMessage = response.data.at(-1);
+      chat.lastElementChild.scrollIntoView();
+    }
   });
 }
 // =====================================================================
