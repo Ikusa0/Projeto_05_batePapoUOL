@@ -240,6 +240,13 @@ footer .icon {
   align-items: center;
 }
 
+.sidebar .menu-option h4 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
 .sidebar .icon {
   font-size: 25px;
 

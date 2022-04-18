@@ -136,9 +136,13 @@ function hideSidebar() {
 function selectContact(newSelected) {
   const selected = getSelectedContact();
   const newSelectedText = newSelected.querySelector("h4").innerHTML;
-  const selectedMethodText = getSelectedMethod().querySelector("h4").innerHTML;
+  let selectedMethodText = getSelectedMethod().querySelector("h4").innerHTML;
 
-  if (newSelectedText === "Todos" && selectedMethodText === "Reservadamente") return;
+  if (newSelected === selected) return;
+  if (newSelectedText === "Todos" && selectedMethodText === "Reservadamente") {
+    selectedMethodText = "Público";
+    selectPublicMethod();
+  }
 
   newSelected.classList.add("selected");
 
@@ -196,15 +200,17 @@ function sendMessage(event) {
 // ======================= MAIN FUNCTIONALITIES ========================
 function changePrivateMessageInformation(method, contact) {
   const privateMessageInformation = getPrivateMessageInformation();
-
-  if (method === "Reservadamente") {
-    privateMessageInformation.firstElementChild.innerHTML = contact;
-    privateMessageInformation.classList.remove("hidden");
-  }
-
-  if (method === "Público") {
+  if (contact === "Todos") {
     privateMessageInformation.classList.add("hidden");
+    return;
   }
+
+  if (contact.length > 10) {
+    contact = contact.substring(0, 10) + "...";
+  }
+
+  privateMessageInformation.innerHTML = `Enviando para <span class="name">${contact}</span> (${method.toLowerCase()})`;
+  privateMessageInformation.classList.remove("hidden");
 }
 
 function sendPresenceStatus() {
@@ -317,6 +323,7 @@ function loadContacts() {
       const all = document.querySelector(".contact.all");
       all.classList.add("selected");
       selectPublicMethod();
+      getPrivateMessageInformation().classList.add("hidden");
     }
   });
 
