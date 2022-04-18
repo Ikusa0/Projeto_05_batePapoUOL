@@ -191,6 +191,8 @@ footer .icon {
   padding: 26px 20px;
   box-sizing: border-box;
 
+  overflow: auto;
+
   transition: all 500ms;
 }
 
@@ -298,4 +300,8 @@ footer span.hidden,
 .message .name,
 .message .destination {
   font-weight: bold;
+}
+
+.message .content {
+  word-wrap: break-word;
 }

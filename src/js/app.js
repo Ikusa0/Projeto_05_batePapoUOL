@@ -1,10 +1,9 @@
-// TODO: Criar uma função separada para mostrar mensagem de envio reservado
-
 // ========================= GLOBAL VARIABLES ==========================
 const API_CONTACT_LIST = "https://mock-api.driven.com.br/api/v6/uol/participants";
 const API_CONNECTION_STATUS = "https://mock-api.driven.com.br/api/v6/uol/status";
 const API_MESSAGES = "https://mock-api.driven.com.br/api/v6/uol/messages";
 let lastMessage;
+let name;
 // =====================================================================
 
 // =========================== AUX FUNCTIONS ===========================
@@ -39,8 +38,8 @@ function clearChat() {
 function convertTime(time) {
   time = time.split(":");
   let hours = parseInt(time[0]);
-  let minutes = parseInt(time[1]);
-  let seconds = parseInt(time[2]);
+  let minutes = time[1];
+  let seconds = time[2];
 
   hours -= 3;
 
@@ -48,9 +47,7 @@ function convertTime(time) {
     hours += 24;
   }
 
-  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
-    .toString()
-    .padStart(2, "0")}`;
+  return `${hours.toString().padStart(2, "0")}:${minutes.padStart(2, "0")}:${seconds.padStart(2, "0")}`;
 }
 
 function compareMessages(m1, m2) {
@@ -59,28 +56,55 @@ function compareMessages(m1, m2) {
   }
   return m1.time === m2.time && m1.type === m2.type && m1.text === m2.text && m1.from === m2.from && m1.to === m2.to;
 }
+
+function getMessageInput() {
+  return document.querySelector("footer input");
+}
+
+function getSendingMessageType() {
+  const method = getSelectedMethod().querySelector("h4").innerHTML;
+  if (method === "Reservadamente") {
+    return "private_message";
+  }
+  return "message";
+}
+
+function getSendingMessageContact() {
+  return getSelectedContact().querySelector("h4").innerHTML;
+}
+
+function getContactList() {
+  return document.querySelector(".contact-list");
+}
+
+function clearContactList() {
+  getContactList().innerHTML = "";
+}
 // =====================================================================
 
 // ===================== EVENT LISTENER FUNCTIONS ======================
 function login(event) {
   if (event.type !== "click" && event.key !== "Enter") return;
 
-  const name = document.querySelector(".login input").value;
+  console.log(event);
+  name = document.querySelector(".login input").value;
 
   const promise = axios.post(API_CONTACT_LIST, {
     name: name,
   });
 
-  promise.then(function () {
+  promise.then(() => {
     const loginDiv = document.querySelector(".login");
     loginDiv.classList.add("hidden");
-    loadMessages(name);
+    loadMessages();
+    loadContacts();
 
-    window.setInterval(sendPresenceStatus, 4000, name);
-    window.setInterval(loadMessages, 3000, name);
+    window.setInterval(sendPresenceStatus, 4000);
+    window.setInterval(loadMessages, 3000);
+    window.setInterval(loadContacts, 10000);
   });
 
-  promise.catch(function () {
+  promise.catch(() => {
     const errorMessage = document.querySelector(".login span");
     errorMessage.classList.remove("hidden");
   });
@@ -107,8 +131,11 @@ function selectContact(newSelected) {
 
   if (newSelectedText === "Todos" && selectedMethodText === "Reservadamente") return;
 
-  selected.classList.remove("selected");
   newSelected.classList.add("selected");
+
+  if (!selected) return;
+
+  selected.classList.remove("selected");
 
   changePrivateMessageInformation(selectedMethodText, newSelectedText);
 }
@@ -116,7 +143,11 @@ function selectContact(newSelected) {
 function selectMethod(newSelected) {
   const selected = getSelectedMethod();
   const newSelectedText = newSelected.querySelector("h4").innerHTML;
-  const selectedContactText = getSelectedContact().querySelector("h4").innerHTML;
+  const selectedContact = getSelectedContact();
+
+  if (!selectedContact) return;
+
+  const selectedContactText = selectedContact.querySelector("h4").innerHTML;
 
   if (selectedContactText === "Todos" && newSelectedText === "Reservadamente") return;
 
@@ -124,6 +155,32 @@ function selectMethod(newSelected) {
   newSelected.classList.add("selected");
 
   changePrivateMessageInformation(newSelectedText, selectedContactText);
+}
+
+function sendMessage(event) {
+  if (event.type !== "click" && event.key !== "Enter") return;
+  const messageInput = getMessageInput();
+
+  const type = getSendingMessageType();
+  const text = messageInput.value;
+  const from = name;
+  const to = getSendingMessageContact();
+
+  const promise = axios.post(API_MESSAGES, {
+    from: from,
+    to: to,
+    text: text,
+    type: type,
+  });
+
+  promise.then(() => {
+    loadMessages();
+    messageInput.value = "";
+  });
+
+  promise.catch((err) => {
+    window.location.reload();
+  });
 }
 // =====================================================================
 
@@ -141,24 +198,20 @@ function changePrivateMessageInformation(method, contact) {
   }
 }
 
-function sendPresenceStatus(name) {
+function sendPresenceStatus() {
   const promise = axios.post(API_CONNECTION_STATUS, {
     name: name,
   });
-
-  promise.then(() => {
-    console.log("Presence Status Sent");
-  });
 }
 
-function loadMessages(name) {
+function loadMessages() {
   const promise = axios.get(API_MESSAGES);
 
-  promise.then(function (response) {
+  promise.then((response) => {
     const chat = getChat();
     clearChat();
 
-    response.data.forEach(function (message) {
+    response.data.forEach((message) => {
       const time = convertTime(message.time);
       const type = message.type;
       const text = message.text;
@@ -190,7 +243,7 @@ function loadMessages(name) {
       }
 
       if (type === "private_message") {
-        if (to !== name) return;
+        if (to !== name && from !== name) return;
         const messageBlock = `
         <div class="message private">
           <span class="time">(${time})</span>
@@ -208,6 +261,43 @@ function loadMessages(name) {
       lastMessage = response.data.at(-1);
       chat.lastElementChild.scrollIntoView();
     }
+  });
+}
+
+// FIXME: Quando atualiza a lista, o selected é perdido, tá todo bugado
+function loadContacts() {
+  const promise = axios.get(API_CONTACT_LIST);
+
+  promise.then((response) => {
+    const contactList = getContactList();
+
+    let selectedContact = getSelectedContact();
+    if (selectedContact) {
+      selectedContact = selectedContact.querySelector("h4").innerHTML;
+    }
+
+    clearContactList();
+
+    let selected = "";
+
+    response.data.forEach((contact) => {
+      const name = contact.name;
+
+      if (name === selectedContact) {
+        selected = "selected";
+      }
+
+      const contactBlock = `
+      <div onclick="selectContact(this)" class="menu-option contact ${selected}">
+        <div>
+          <ion-icon class="icon" name="person-circle"></ion-icon>
+          <h4>${name}</h4>
+        </div>
+        <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
+      </div>`;
+
+      contactList.innerHTML += contactBlock;
+    });
   });
 }
 // =====================================================================

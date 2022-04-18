@@ -22,10 +22,10 @@
     </header>
     <footer>
       <div>
-        <input type="text" placeholder="Escreva aqui..." />
+        <input onkeyup="sendMessage(event)" type="text" placeholder="Escreva aqui..." />
         <span class="hidden">Enviando para <span class="name">Maria</span> (reservadamente)</span>
       </div>
-      <ion-icon class="icon" name="paper-plane-outline"></ion-icon>
+      <ion-icon onclick="sendMessage(event)" class="icon" name="paper-plane-outline"></ion-icon>
     </footer>
     <div onclick="hideSidebar()" class="sidebar-background hidden"></div>
     <aside class="sidebar hidden">
@@ -39,19 +39,21 @@
         </div>
         <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
       </div>
-      <div onclick="selectContact(this)" class="menu-option contact">
-        <div>
-          <ion-icon class="icon" name="person-circle"></ion-icon>
-          <h4>João</h4>
+      <div class = "contact-list">
+        <div onclick="selectContact(this)" class="menu-option contact">
+          <div>
+            <ion-icon class="icon" name="person-circle"></ion-icon>
+            <h4>João</h4>
+          </div>
+          <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
         </div>
-        <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
-      </div>
-      <div onclick="selectContact(this)" class="menu-option contact">
-        <div>
-          <ion-icon class="icon" name="person-circle"></ion-icon>
-          <h4>Maria</h4>
+        <div onclick="selectContact(this)" class="menu-option contact">
+          <div>
+            <ion-icon class="icon" name="person-circle"></ion-icon>
+            <h4>Maria</h4>
+          </div>
+          <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
         </div>
-        <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
       </div>
       <section class="menu-title">
         <h3>Escolha a visibilidade:</h3>
