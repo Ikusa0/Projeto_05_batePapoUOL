@@ -10,11 +10,28 @@
     <link rel="stylesheet" href="./src/css/style.css" />
   </head>
   <body>
+    <div class="loadingio-spinner-spin-bxq5xak3bss hidden">
+      <div class="ldio-gv32y5yvpvp">
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+      </div>
+    </div>
     <div class="login">
-      <img src="./src/img/logo.png" alt="Logo Bate-Papo UOL" />
-      <input onkeyup="login(event)" type="text" placeholder="Digite seu nome" />
-      <span class="hidden">O nome escolhido já existe!</span>
-      <button onclick="login(event)">Entrar</button>
+      <div>
+        <img src="./src/img/logo.png" alt="Logo Bate-Papo UOL" />
+        <input onkeyup="login(event)" type="text" placeholder="Digite seu nome" />
+        <span class="hidden">O nome escolhido já existe!</span>
+        <button onclick="login(event)">Entrar</button>
+      </div>
     </div>
     <header>
       <img src="./src/img/logo.png" alt="Logo Bate-Papo UOL" />
@@ -32,29 +49,14 @@
       <section class="menu-title">
         <h3>Escolha um contato para enviar mensagem:</h3>
       </section>
-      <div onclick="selectContact(this)" class="menu-option contact selected">
+      <div onclick="selectContact(this)" class="menu-option contact all selected">
         <div>
           <ion-icon class="icon" name="people"></ion-icon>
           <h4>Todos</h4>
         </div>
         <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
       </div>
-      <div class = "contact-list">
-        <div onclick="selectContact(this)" class="menu-option contact">
-          <div>
-            <ion-icon class="icon" name="person-circle"></ion-icon>
-            <h4>João</h4>
-          </div>
-          <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
-        </div>
-        <div onclick="selectContact(this)" class="menu-option contact">
-          <div>
-            <ion-icon class="icon" name="person-circle"></ion-icon>
-            <h4>Maria</h4>
-          </div>
-          <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
-        </div>
-      </div>
+      <div class="contact-list"></div>
       <section class="menu-title">
         <h3>Escolha a visibilidade:</h3>
       </section>
@@ -73,39 +75,7 @@
         <ion-icon class="icon check" name="checkmark-circle"></ion-icon>
       </div>
     </aside>
-    <div class="webpage">
-      <div class="message status">
-        <span class="time">(09:21:45)</span>
-        <span class="name">João</span>
-        <span class="content">entra na sala...</span>
-      </div>
-      <div class="message">
-        <span class="time">(09:22:28)</span>
-        <span class="name">João</span>
-        <span class="method">para</span>
-        <span class="destination">Todos:</span>
-        <span class="content">Bom dia</span>
-      </div>
-      <div class="message">
-        <span class="time">(09:22:38)</span>
-        <span class="name">Maria</span>
-        <span class="method">para</span>
-        <span class="destination">João:</span>
-        <span class="content">Oi João :)</span>
-      </div>
-      <div class="message private">
-        <span class="time">(09:22:48)</span>
-        <span class="name">João</span>
-        <span class="method">reservadamente para</span>
-        <span class="destination">Maria:</span>
-        <span class="content">Oi gatinha quer tc?</span>
-      </div>
-      <div class="message status">
-        <span class="time">(09:22:58)</span>
-        <span class="name">Maria</span>
-        <span class="content">sai da sala...</span>
-      </div>
-    </div>
+    <div class="webpage"></div>
 
     <!-- AXIOS -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

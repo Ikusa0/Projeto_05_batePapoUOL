@@ -23,6 +23,11 @@ function getSelectedMethod() {
   return document.querySelector(".method.selected");
 }
 
+function selectPublicMethod() {
+  const public = document.querySelector(".method");
+  selectMethod(public);
+}
+
 function getPrivateMessageInformation() {
   return document.querySelector("footer span");
 }
@@ -86,15 +91,18 @@ function clearContactList() {
 function login(event) {
   if (event.type !== "click" && event.key !== "Enter") return;
 
-  console.log(event);
   name = document.querySelector(".login input").value;
 
   const promise = axios.post(API_CONTACT_LIST, {
     name: name,
   });
 
+  const loadingSpinner = document.querySelector(".loadingio-spinner-spin-bxq5xak3bss");
+  loadingSpinner.classList.remove("hidden");
+
   promise.then(() => {
     const loginDiv = document.querySelector(".login");
+    loadingSpinner.classList.add("hidden");
     loginDiv.classList.add("hidden");
     loadMessages();
     loadContacts();
@@ -106,6 +114,7 @@ function login(event) {
 
   promise.catch(() => {
     const errorMessage = document.querySelector(".login span");
+    loadingSpinner.classList.add("hidden");
     errorMessage.classList.remove("hidden");
   });
 }
@@ -262,9 +271,12 @@ function loadMessages() {
       chat.lastElementChild.scrollIntoView();
     }
   });
+
+  promise.catch(() => {
+    window.location.reload();
+  });
 }
 
-// FIXME: Quando atualiza a lista, o selected é perdido, tá todo bugado
 function loadContacts() {
   const promise = axios.get(API_CONTACT_LIST);
 
@@ -278,13 +290,15 @@ function loadContacts() {
 
     clearContactList();
 
-    let selected = "";
+    let isContactOnline = false;
 
     response.data.forEach((contact) => {
       const name = contact.name;
+      let selected = "";
 
       if (name === selectedContact) {
         selected = "selected";
+        isContactOnline = true;
       }
 
       const contactBlock = `
@@ -298,6 +312,16 @@ function loadContacts() {
 
       contactList.innerHTML += contactBlock;
     });
+
+    if (!isContactOnline) {
+      const all = document.querySelector(".contact.all");
+      all.classList.add("selected");
+      selectPublicMethod();
+    }
+  });
+
+  promise.catch(() => {
+    window.location.reload();
   });
 }
 // =====================================================================
